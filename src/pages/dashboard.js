@@ -1,51 +1,75 @@
+import { useEffect, useState } from 'react';
 import {
   Box,
   Container,
-  Flex,
   VStack,
+  HStack,
   Heading,
-  Tab,
+  Button,
+  useToast,
   Tabs,
   TabList,
-  TabPanel,
   TabPanels,
-  useColorModeValue,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
-import BitBuddyLogo from '../components/BitBuddyLogo';
-import LearningModule from '../components/LearningModule';
-import Goals from '../components/Goals';
+import { useRouter } from 'next/router';
+import ModuleList from '../components/ModuleList';
+import Wallet from '../components/Wallet';
 
 export default function Dashboard() {
-  const bgColor = useColorModeValue('orange.50', 'gray.900');
-  
+  const [user, setUser] = useState(null);
+  const router = useRouter();
+  const toast = useToast();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userData = localStorage.getItem('bitbuddy_user');
+    if (!userData) {
+      router.push('/auth');
+    } else {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('bitbuddy_user');
+    router.push('/auth');
+    toast({
+      title: 'Logged out successfully',
+      status: 'success',
+      duration: 2000,
+    });
+  };
+
+  if (!user) return null;
+
   return (
-    <Box minH="100vh" bg={bgColor}>
-      {/* Header */}
-      <Box bg={useColorModeValue('white', 'gray.800')} py={4} shadow="sm">
+    <Box minH="100vh" bg="gray.50">
+      <Box bg="white" shadow="sm" py={4}>
         <Container maxW="container.xl">
-          <Flex justify="space-between" align="center">
-            <Flex align="center" gap={4}>
-              <BitBuddyLogo width="50px" height="50px" />
-              <Heading size="lg" color="orange.400">BitBuddy</Heading>
-            </Flex>
-          </Flex>
+          <HStack justify="space-between">
+            <Heading size="lg" color="orange.400">BitBuddy</Heading>
+            <Button onClick={handleLogout} variant="ghost">
+              Logout
+            </Button>
+          </HStack>
         </Container>
       </Box>
 
-      {/* Main Content */}
       <Container maxW="container.xl" py={8}>
-        <Tabs colorScheme="orange" variant="enclosed">
+        <Tabs colorScheme="orange">
           <TabList>
             <Tab>Learn & Earn</Tab>
-            <Tab>Your Goals</Tab>
+            <Tab>Wallet</Tab>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-              <LearningModule />
+              <ModuleList />
             </TabPanel>
             <TabPanel>
-              <Goals />
+              <Wallet />
             </TabPanel>
           </TabPanels>
         </Tabs>
