@@ -1,346 +1,345 @@
-// Base lessons for each module
-const BASE_MODULE_1_LESSONS = [
+// Module 4: Family Money Matters
+const MODULE_4_LESSONS = [
   {
     id: 1,
-    title: "What is Money?",
-    emoji: "💰",
-    duration: "3 mins",
+    title: "Family Budget Basics",
+    emoji: "👨‍👩‍👧‍👦",
+    duration: "6 mins",
+    reward: 600,
+    content: [
+      {
+        type: "intro",
+        text: "Master family financial planning: Learn how to create and manage an effective family budget that works for everyone. 📊",
+      },
+      {
+        type: "explanation",
+        text: "Budget Components:",
+        points: [
+          "💰 Income Sources: Salary, investments, side hustles",
+          "📝 Fixed Expenses: Rent, utilities, loans",
+          "🔄 Variable Expenses: Food, entertainment, shopping",
+          "💸 Savings & Investments: Emergency fund, future goals"
+        ]
+      },
+      {
+        type: "explanation",
+        text: "Budget Management:",
+        points: [
+          "📊 Track all expenses meticulously",
+          "🎯 Set realistic spending limits",
+          "💡 Identify cost-cutting opportunities",
+          "📈 Regular budget reviews and adjustments"
+        ]
+      },
+      {
+        type: "activity",
+        text: "Create Family Budget:\n1. List all income sources\n2. Map monthly expenses\n3. Set category limits\n4. Plan savings allocation",
+      },
+      {
+        type: "funFact",
+        text: "Successful family budgets typically follow the 50/30/20 rule: 50% needs, 30% wants, 20% savings! 💫",
+      }
+    ],
+    quiz: {
+      question: "What's most important in a family budget?",
+      options: [
+        "Regular tracking and adjustment",
+        "Spending all income",
+        "Avoiding savings",
+        "Ignoring expenses"
+      ],
+      correct: 0
+    }
+  },
+  {
+    id: 2,
+    title: "Smart Shopping Together",
+    emoji: "🛒",
+    duration: "5 mins",
     reward: 500,
     content: [
       {
         type: "intro",
-        text: "Hi friend! Let's learn about money together! Money is like special tickets we use to get things we need and want. 🎈",
+        text: "Transform family shopping into a strategic activity: Learn to save money while meeting everyone's needs. 🎯",
       },
       {
         type: "explanation",
-        text: "Here are some fun things we can do with money:",
+        text: "Shopping Strategies:",
         points: [
-          "🍎 Buy yummy food from the store",
-          "🧸 Get fun toys to play with",
-          "📚 Buy books to read and learn",
-          "🎪 Go to fun places with family"
+          "📝 Create detailed shopping lists",
+          "🔍 Research prices and deals",
+          "🎯 Use price comparison tools",
+          "💰 Leverage bulk purchases"
+        ]
+      },
+      {
+        type: "explanation",
+        text: "Money-Saving Tips:",
+        points: [
+          "🏷️ Use coupons and discounts",
+          "📅 Time purchases with sales",
+          "💡 Generic vs. brand names",
+          "🔄 Reuse and recycle"
         ]
       },
       {
         type: "activity",
-        text: "Fun Activity Time! 🌟\nAsk your grown-up to show you different types of money:\n- Count some coins\n- Look at different bills\n- Spot the numbers on them",
+        text: "Family Shopping Challenge:\n1. Set shopping budget\n2. Find best deals together\n3. Compare prices online/offline\n4. Calculate total savings",
       },
       {
         type: "funFact",
-        text: "Did you know? A long time ago, people used seashells and beads as money! 🐚",
+        text: "Families who shop with a list typically save 23% on their grocery bills! 💪",
       }
     ],
     quiz: {
-      question: "What can we use money for?",
+      question: "What's the best way to save on family shopping?",
       options: [
-        "Buying food and toys",
-        "Making a bed",
-        "Drawing pictures",
-        "Flying like a bird"
+        "Plan ahead and compare prices",
+        "Buy without checking prices",
+        "Always buy the cheapest option",
+        "Shop without a list"
       ],
       correct: 0
     }
   },
   {
-    id: 2,
-    title: "Piggy Bank Adventures",
-    emoji: "🐷",
-    duration: "4 mins",
-    reward: 750,
+    id: 3,
+    title: "Family Saving Goals",
+    emoji: "🎯",
+    duration: "7 mins",
+    reward: 700,
     content: [
       {
         type: "intro",
-        text: "Meet Perry the Piggy Bank! He loves to help us save money! 🐷",
+        text: "Set and achieve family financial goals together: From vacation funds to college savings. 🚀",
       },
       {
         type: "explanation",
-        text: "Why should we save money?",
+        text: "Types of Family Goals:",
         points: [
-          "🎁 Save for special toys we want",
-          "🔮 Save for future fun things",
-          "🌟 Watch our savings grow bigger",
-          "🎯 Learn to be patient and smart"
+          "🏠 Major purchases (home, car)",
+          "🎓 Education funding",
+          "✈️ Family vacations",
+          "🏦 Retirement planning"
+        ]
+      },
+      {
+        type: "explanation",
+        text: "Goal Achievement Strategy:",
+        points: [
+          "📊 Set specific, measurable targets",
+          "⏰ Create realistic timelines",
+          "💰 Determine required savings",
+          "📈 Track progress together"
         ]
       },
       {
         type: "activity",
-        text: "Let's start saving! Find a special jar or box at home. Decorate it with stickers and draw what you're saving for! ✨",
+        text: "Family Goal Board:\n1. List family dreams\n2. Prioritize goals\n3. Create saving plan\n4. Make progress visible",
       },
       {
         type: "funFact",
-        text: "Cool fact: If you save just 1 coin every day, you'll have 365 coins in a year! That's a lot! 🌈",
+        text: "Families who set financial goals together are 90% more likely to achieve them! 🎯",
       }
     ],
     quiz: {
-      question: "Why do we use a piggy bank?",
+      question: "What makes a family saving goal effective?",
       options: [
-        "To save money for later",
-        "To feed a pet pig",
-        "To make music",
-        "To play games"
-      ],
-      correct: 0
-    }
-  }
-];
-
-// Add the new lessons from the imported files
-const MODULE_1_LESSONS = [...BASE_MODULE_1_LESSONS];
-
-const MODULE_2_LESSONS = [
-  {
-    id: 1,
-    title: "Power of Interest",
-    emoji: "⚡",
-    duration: "4 mins",
-    reward: 1000,
-    content: [
-      {
-        type: "intro",
-        text: "Let's discover how your money can grow by itself! It's like magic, but it's called interest! ✨",
-      },
-      {
-        type: "explanation",
-        text: "How interest makes your money grow:",
-        points: [
-          "🌱 Your money is like a plant that grows",
-          "🕒 The longer you save, the more it grows",
-          "🎢 Interest is like getting bonus points on your savings",
-          "📈 Watch your money multiply over time"
-        ]
-      },
-      {
-        type: "activity",
-        text: "Let's play the interest game!\nPut 10 coins in a jar\nAdd 1 'interest coin' each day\nSee how it grows! 🪙",
-      }
-    ],
-    quiz: {
-      question: "What is interest?",
-      options: [
-        "Extra money your savings earn",
-        "A type of candy",
-        "A new toy",
-        "A birthday present"
+        "Clear target and timeline",
+        "Undefined amount",
+        "No deadline",
+        "Secret planning"
       ],
       correct: 0
     }
   },
   {
-    id: 2,
-    title: "The Magic of Compound Interest",
-    emoji: "✨",
+    id: 4,
+    title: "Special Occasions",
+    emoji: "🎉",
     duration: "5 mins",
-    reward: 1100,
+    reward: 500,
     content: [
       {
         type: "intro",
-        text: "Get ready to see how your money can grow like magic with compound interest! 🎩",
+        text: "Plan for celebrations without breaking the bank: Smart financial planning for special occasions. 🎊",
       },
       {
         type: "explanation",
-        text: "How compound interest works:",
+        text: "Event Planning:",
         points: [
-          "💰 Your money earns money",
-          "🔄 Then that new money earns more money",
-          "📈 It keeps growing and growing",
-          "🚀 The longer you wait, the more you get!"
+          "📅 Create event calendar",
+          "💰 Set event budgets",
+          "💡 Plan ahead for expenses",
+          "🎁 Gift-giving strategies"
+        ]
+      },
+      {
+        type: "explanation",
+        text: "Cost Management:",
+        points: [
+          "🔍 Research vendors and prices",
+          "💭 Creative celebration ideas",
+          "🤝 Share costs when appropriate",
+          "💰 Build occasion-specific savings"
         ]
       },
       {
         type: "activity",
-        text: "Let's play the Compound Growth Game!\n1. Start with 10 marbles\n2. Add 1 marble for each you have every 'year'\n3. Count how many you have after 5 'years'\nWatch them multiply! 🎲",
-      }
-    ],
-    quiz: {
-      question: "What makes compound interest special?",
-      options: [
-        "Your earnings earn more earnings",
-        "It makes you taller",
-        "It gives you superpowers",
-        "It does your homework"
-      ],
-      correct: 0
-    }
-  }
-];
-
-const MODULE_3_LESSONS = [
-  {
-    id: 1,
-    title: "Bitcoin Treasure Hunt",
-    emoji: "🗺️",
-    duration: "5 mins",
-    reward: 1500,
-    content: [
-      {
-        type: "intro",
-        text: "Let's go on a treasure hunt to learn about Bitcoin! 🏴‍☠️",
+        text: "Event Budget Planner:\n1. List upcoming occasions\n2. Estimate costs\n3. Create saving timeline\n4. Find creative solutions",
       },
       {
-        type: "explanation",
-        text: "Special things about Bitcoin:",
-        points: [
-          "💎 It's like digital gold",
-          "🌍 Works everywhere in the world",
-          "🔑 You keep it safe with special keys",
-          "🤖 Created by computers solving puzzles"
-        ]
+        type: "funFact",
+        text: "The average family spends 10% of their annual budget on special occasions! 🎈",
       }
     ],
     quiz: {
-      question: "What makes Bitcoin special?",
+      question: "What's the best approach to special occasion planning?",
       options: [
-        "It works everywhere in the world",
-        "It tastes like chocolate",
-        "It can fly",
-        "It glows in the dark"
+        "Plan and save in advance",
+        "Use credit cards last minute",
+        "Skip celebrations",
+        "Overspend every time"
       ],
       correct: 0
     }
   },
   {
-    id: 2,
-    title: "Bitcoin Safety Hero",
-    emoji: "🦸‍♂️",
-    duration: "5 mins",
-    reward: 1200,
+    id: 5,
+    title: "Family Money Talks",
+    emoji: "💭",
+    duration: "6 mins",
+    reward: 600,
     content: [
       {
         type: "intro",
-        text: "Become a Bitcoin Safety Superhero! Learn to protect your digital treasure! 🛡️",
+        text: "Master the art of family financial communication: Open, honest, and productive money discussions. 🗣️",
       },
       {
         type: "explanation",
-        text: "Your Bitcoin Safety Powers:",
+        text: "Communication Basics:",
         points: [
-          "🔑 Keep your secret keys super safe",
-          "🚫 Never share your passwords",
-          "👾 Watch out for tricky scams",
-          "🔒 Use strong passwords"
+          "🎯 Set regular meeting times",
+          "📊 Share financial updates",
+          "👥 Include all family members",
+          "💡 Encourage open dialogue"
+        ]
+      },
+      {
+        type: "explanation",
+        text: "Discussion Topics:",
+        points: [
+          "💰 Income and expenses",
+          "🎯 Progress on goals",
+          "💡 New financial ideas",
+          "📈 Investment decisions"
         ]
       },
       {
         type: "activity",
-        text: "Create your Bitcoin Superhero Identity!\n1. Design your hero costume\n2. List your safety powers\n3. Make safety rules\n4. Share tips with friends! 🦸‍♀️",
-      }
-    ],
-    quiz: {
-      question: "What should a Bitcoin Safety Hero never share?",
-      options: [
-        "Secret keys and passwords",
-        "Favorite color",
-        "Superhero name",
-        "Favorite food"
-      ],
-      correct: 0
-    }
-  }
-];
-
-const MODULE_4_LESSONS = [
-  {
-    id: 1,
-    title: "Family Budget Fun",
-    emoji: "👨‍👩‍👧‍👦",
-    duration: "5 mins",
-    reward: 1200,
-    content: [
-      {
-        type: "intro",
-        text: "Let's learn how families plan their money together! 🏠",
+        text: "Family Meeting Simulation:\n1. Set meeting agenda\n2. Assign roles\n3. Practice discussions\n4. Make decisions together",
       },
       {
-        type: "explanation",
-        text: "Family money planning includes:",
-        points: [
-          "🏠 Home expenses",
-          "🥗 Food and groceries",
-          "📚 School supplies",
-          "🎈 Fun activities"
-        ]
+        type: "funFact",
+        text: "Regular family money talks can reduce financial stress by 70%! 🌟",
       }
     ],
     quiz: {
-      question: "What should families plan for?",
+      question: "What makes family money talks effective?",
       options: [
-        "All important expenses",
-        "Only toys",
-        "Just ice cream",
-        "Nothing at all"
+        "Regular, open discussions",
+        "Avoiding money topics",
+        "Excluding some members",
+        "Hiding financial issues"
       ],
       correct: 0
     }
   },
   {
-    id: 2,
-    title: "Family Money Team",
-    emoji: "🤝",
+    id: 6,
+    title: "Future Planning",
+    emoji: "🔮",
     duration: "5 mins",
-    reward: 1000,
+    reward: 500,
     content: [
       {
         type: "intro",
-        text: "Your family is like a super team when it comes to money! Let's learn to work together! 🦸‍♂️",
+        text: "Secure your family's financial future: Long-term planning, investments, and legacy building. 📈",
       },
       {
         type: "explanation",
-        text: "Team roles everyone can play:",
+        text: "Planning Areas:",
         points: [
-          "💡 Share smart spending ideas",
-          "📝 Help make shopping lists",
-          "💰 Track family savings goals",
-          "🎯 Suggest fun, free activities"
+          "📚 Education funding",
+          "🏠 Real estate planning",
+          "💰 Investment strategy",
+          "🛡️ Insurance coverage"
+        ]
+      },
+      {
+        type: "explanation",
+        text: "Investment Options:",
+        points: [
+          "₿ Bitcoin/crypto allocation",
+          "📈 Stock market basics",
+          "🏦 Traditional savings",
+          "📊 Risk management"
         ]
       },
       {
         type: "activity",
-        text: "Create Family Money Team Badges!\n1. Design a badge for each role\n2. Write team member duties\n3. Have weekly team meetings\n4. Celebrate wins together! 🎨",
+        text: "Future Timeline Creation:\n1. Map major life events\n2. Set financial milestones\n3. Plan investment strategy\n4. Review and adjust",
+      },
+      {
+        type: "funFact",
+        text: "Families who plan for the future are 80% more likely to achieve financial independence! 🚀",
       }
     ],
     quiz: {
-      question: "How can kids help the family money team?",
+      question: "What's crucial for family future planning?",
       options: [
-        "Share money-saving ideas",
-        "Hide the money",
-        "Spend it all quickly",
-        "Never talk about money"
+        "Regular review and adjustment",
+        "Setting and forgetting",
+        "Avoiding investments",
+        "Short-term thinking"
       ],
       correct: 0
     }
   }
 ];
 
-// Export all modules data
+// Final export of all modules
 export const ALL_MODULES = [
   {
     id: 1,
     title: "Money Basics",
     description: "Learn the fundamentals of money and how it works",
     emoji: "💰",
-    lessons: MODULE_1_LESSONS
+    lessons: MODULE_1_LESSONS,
+    totalRewards: MODULE_1_LESSONS.reduce((sum, lesson) => sum + lesson.reward, 0)
   },
   {
     id: 2,
     title: "Smart Saving Adventures",
     description: "Discover the magic of saving and watching money grow",
     emoji: "🐷",
-    lessons: MODULE_2_LESSONS
+    lessons: MODULE_2_LESSONS,
+    totalRewards: MODULE_2_LESSONS.reduce((sum, lesson) => sum + lesson.reward, 0)
   },
   {
     id: 3,
     title: "Bitcoin Adventure",
     description: "Explore the exciting world of Bitcoin",
     emoji: "₿",
-    lessons: MODULE_3_LESSONS
+    lessons: MODULE_3_LESSONS,
+    totalRewards: MODULE_3_LESSONS.reduce((sum, lesson) => sum + lesson.reward, 0)
   },
   {
     id: 4,
     title: "Family Money Matters",
     description: "Learn about family budgets and planning together",
     emoji: "👨‍👩‍👧‍👦",
-    lessons: MODULE_4_LESSONS
+    lessons: MODULE_4_LESSONS,
+    totalRewards: MODULE_4_LESSONS.reduce((sum, lesson) => sum + lesson.reward, 0)
   }
-].map(module => ({
-  ...module,
-  totalRewards: module.lessons.reduce((sum, lesson) => sum + (lesson.reward || 0), 0)
-}));
+];
