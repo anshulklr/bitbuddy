@@ -14,6 +14,15 @@ if (typeof window !== 'undefined') {
   });
 }
 
+// Helper function to safely convert BigInt to Number
+const safeBigIntToNumber = (value) => {
+  if (typeof value === 'bigint') {
+    // Convert to string first to avoid precision loss
+    return Number(value.toString());
+  }
+  return value;
+};
+
 class WalletService {
   static async waitForInitialization() {
     // Wait for SDK to be loaded
@@ -42,9 +51,13 @@ class WalletService {
       // Get the spark address
       const address = await wallet.getSparkAddress();
 
+      // Get initial balance
+      const balance = await wallet.getBalance();
+
       return {
         mnemonic,
         address,
+        balance: safeBigIntToNumber(balance?.balance || 0),
         wallet
       };
     } catch (error) {
@@ -76,7 +89,7 @@ class WalletService {
     try {
       const wallet = await this.loadWallet(mnemonic);
       const result = await wallet.getBalance();
-      return result.balance;
+      return safeBigIntToNumber(result?.balance || 0);
     } catch (error) {
       console.error('Error getting balance:', error);
       return 0;
@@ -88,22 +101,29 @@ class WalletService {
     if (typeof window === 'undefined') return false;
     
     try {
+      // Convert any BigInt values to numbers before storing
+      const processedUserData = {
+        ...userData,
+        balance: safeBigIntToNumber(userData.balance || 0)
+      };
+
       // Save user data
       const users = JSON.parse(localStorage.getItem('bitbuddy_users') || '[]');
-      const userIndex = users.findIndex(u => u.email === userData.email);
+      const userIndex = users.findIndex(u => u.email === processedUserData.email);
 
       if (userIndex !== -1) {
-        users[userIndex] = { ...users[userIndex], ...userData };
+        users[userIndex] = { ...users[userIndex], ...processedUserData };
       } else {
-        users.push(userData);
+        users.push(processedUserData);
       }
 
       localStorage.setItem('bitbuddy_users', JSON.stringify(users));
 
       // Save current user session (without mnemonic)
       const sessionData = {
-        email: userData.email,
-        address: userData.address
+        email: processedUserData.email,
+        address: processedUserData.address,
+        balance: processedUserData.balance
       };
       localStorage.setItem('bitbuddy_user', JSON.stringify(sessionData));
 
@@ -161,11 +181,14 @@ class WalletService {
       const user = this.getUser(email);
       if (!user) return false;
 
-      const transactions = JSON.parse(localStorage.getItem(`transactions_${email}`) || '[]');
-      transactions.push({
+      const processedTransaction = {
         ...transaction,
+        amount: safeBigIntToNumber(transaction.amount),
         timestamp: new Date().toISOString()
-      });
+      };
+
+      const transactions = JSON.parse(localStorage.getItem(`transactions_${email}`) || '[]');
+      transactions.push(processedTransaction);
       localStorage.setItem(`transactions_${email}`, JSON.stringify(transactions));
       return true;
     } catch (error) {
@@ -194,7 +217,7 @@ class WalletService {
 
       const transaction = {
         type: 'reward',
-        amount: amount,
+        amount: safeBigIntToNumber(amount),
         timestamp: new Date().toISOString()
       };
 
