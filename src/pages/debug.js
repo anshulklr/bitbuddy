@@ -16,14 +16,26 @@ import {
   Tr,
   Th,
   Td,
-  Code,
   Button,
   useClipboard,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { ALL_MODULES } from '../data/moduleData';
 
 export default function DebugView() {
   const { onCopy, hasCopied } = useClipboard(JSON.stringify(ALL_MODULES, null, 2));
+
+  if (!ALL_MODULES || ALL_MODULES.length === 0) {
+    return (
+      <Container maxW="container.xl" py={8}>
+        <Alert status="error">
+          <AlertIcon />
+          No module data available
+        </Alert>
+      </Container>
+    );
+  }
 
   return (
     <Container maxW="container.xl" py={8}>
@@ -56,8 +68,8 @@ export default function DebugView() {
                   
                   <Box>
                     <Text fontWeight="bold">Stats:</Text>
-                    <Text>Total Lessons: {module.lessons.length}</Text>
-                    <Text>Total Rewards: {module.totalRewards} sats</Text>
+                    <Text>Total Lessons: {module.lessons?.length || 0}</Text>
+                    <Text>Total Rewards: {module.totalRewards || 0} sats</Text>
                   </Box>
 
                   <Box>
@@ -73,7 +85,7 @@ export default function DebugView() {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {module.lessons.map((lesson) => (
+                        {module.lessons?.map((lesson) => (
                           <Tr key={lesson.id}>
                             <Td>{lesson.id}</Td>
                             <Td>
