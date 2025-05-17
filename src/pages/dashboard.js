@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'next/router';
 import ModuleList from '../components/ModuleList';
 import Wallet from '../components/Wallet';
+import { WalletService } from '../services/WalletService';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -24,16 +25,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     // Check if user is logged in
-    const userData = localStorage.getItem('bitbuddy_user');
+    const userData = WalletService.getCurrentUser();
     if (!userData) {
       router.push('/auth');
     } else {
-      setUser(JSON.parse(userData));
+      setUser(userData);
     }
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('bitbuddy_user');
+    WalletService.logout();
     router.push('/auth');
     toast({
       title: 'Logged out successfully',

@@ -83,5 +83,130 @@ class WalletService {
     }
   }
 
-  // Rest of the code remains the same...
+  // Save user data to local storage
+  static saveUser(userData) {
+    if (typeof window === 'undefined') return false;
+    
+    try {
+      // Save user data
+      const users = JSON.parse(localStorage.getItem('bitbuddy_users') || '[]');
+      const userIndex = users.findIndex(u => u.email === userData.email);
+
+      if (userIndex !== -1) {
+        users[userIndex] = { ...users[userIndex], ...userData };
+      } else {
+        users.push(userData);
+      }
+
+      localStorage.setItem('bitbuddy_users', JSON.stringify(users));
+
+      // Save current user session (without mnemonic)
+      const sessionData = {
+        email: userData.email,
+        address: userData.address
+      };
+      localStorage.setItem('bitbuddy_user', JSON.stringify(sessionData));
+
+      return true;
+    } catch (error) {
+      console.error('Error saving user data:', error);
+      return false;
+    }
+  }
+
+  // Get user data from local storage
+  static getUser(email) {
+    if (typeof window === 'undefined') return null;
+    
+    try {
+      const users = JSON.parse(localStorage.getItem('bitbuddy_users') || '[]');
+      return users.find(u => u.email === email) || null;
+    } catch (error) {
+      console.error('Error getting user data:', error);
+      return null;
+    }
+  }
+
+  // Get current user session
+  static getCurrentUser() {
+    if (typeof window === 'undefined') return null;
+    
+    try {
+      const userData = localStorage.getItem('bitbuddy_user');
+      return userData ? JSON.parse(userData) : null;
+    } catch (error) {
+      console.error('Error getting current user:', error);
+      return null;
+    }
+  }
+
+  // Logout user
+  static logout() {
+    if (typeof window === 'undefined') return;
+    
+    try {
+      localStorage.removeItem('bitbuddy_user');
+      return true;
+    } catch (error) {
+      console.error('Error logging out:', error);
+      return false;
+    }
+  }
+
+  // Add transaction to history
+  static addTransaction(email, transaction) {
+    if (typeof window === 'undefined') return false;
+    
+    try {
+      const user = this.getUser(email);
+      if (!user) return false;
+
+      const transactions = JSON.parse(localStorage.getItem(`transactions_${email}`) || '[]');
+      transactions.push({
+        ...transaction,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem(`transactions_${email}`, JSON.stringify(transactions));
+      return true;
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+      return false;
+    }
+  }
+
+  // Get transaction history
+  static getTransactionHistory(email) {
+    if (typeof window === 'undefined') return [];
+    
+    try {
+      return JSON.parse(localStorage.getItem(`transactions_${email}`) || '[]');
+    } catch (error) {
+      console.error('Error getting transaction history:', error);
+      return [];
+    }
+  }
+
+  // Add reward transaction
+  static async addReward(email, amount) {
+    try {
+      const user = this.getUser(email);
+      if (!user) return false;
+
+      const transaction = {
+        type: 'reward',
+        amount: amount,
+        timestamp: new Date().toISOString()
+      };
+
+      // Add to transaction history
+      return this.addTransaction(email, transaction);
+    } catch (error) {
+      console.error('Error adding reward:', error);
+      return false;
+    }
+  }
 }
+
+// Export as named and default export
+export { WalletService };
+export default WalletService;
