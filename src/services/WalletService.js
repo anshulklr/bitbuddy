@@ -1,9 +1,20 @@
-import { SparkWallet } from "@buildonspark/spark-sdk";
+let SparkWallet;
+
+// Dynamic import of Spark SDK to avoid SSR issues
+if (typeof window !== 'undefined') {
+  import('@buildonspark/spark-sdk').then(module => {
+    SparkWallet = module.SparkWallet;
+  });
+}
 
 class WalletService {
   // Generate a new wallet
   static async generateWallet() {
     try {
+      if (!SparkWallet) {
+        throw new Error('Spark SDK not initialized');
+      }
+
       // Initialize new wallet
       const { wallet, mnemonic } = await SparkWallet.initialize({
         options: {
@@ -20,13 +31,17 @@ class WalletService {
       };
     } catch (error) {
       console.error('Error generating Spark wallet:', error);
-      throw new Error('Failed to generate Spark wallet');
+      throw new Error('Failed to generate Spark wallet: ' + error.message);
     }
   }
 
   // Load existing wallet
   static async loadWallet(mnemonic) {
     try {
+      if (!SparkWallet) {
+        throw new Error('Spark SDK not initialized');
+      }
+
       const { wallet } = await SparkWallet.initialize({
         mnemonicOrSeed: mnemonic,
         options: {
@@ -36,7 +51,7 @@ class WalletService {
       return wallet;
     } catch (error) {
       console.error('Error loading wallet:', error);
-      throw new Error('Failed to load wallet');
+      throw new Error('Failed to load wallet: ' + error.message);
     }
   }
 
