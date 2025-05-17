@@ -169,7 +169,7 @@ const MODULE_1_LESSONS = [
           "📝 Make a list before shopping",
           "🔍 Compare prices",
           "🎯 Look for special deals",
-          "💡 Ask: "Do we really need this?""
+          "💡 Ask: 'Do we really need this?'"
         ]
       },
       {
