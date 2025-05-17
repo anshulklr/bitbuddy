@@ -1,21 +1,24 @@
-import { SparkWallet } from "@buildonspark/spark-sdk";
+// Mock implementation of Spark Wallet functionality
+// TODO: Replace with actual Spark SDK when package is installed
+
+import { bitcoin__generate_key } from '../utils/bitcoin';
 
 class WalletService {
   // Generate a new wallet
   static async generateWallet() {
     try {
-      // Initialize new wallet
-      const { wallet, mnemonic } = await SparkWallet.initialize({
-        options: {
-          network: "MAINNET"
-        }
-      });
+      // Generate mnemonic (12 random words for demo)
+      const words = [
+        'abandon', 'ability', 'able', 'about', 'above', 'absent',
+        'absorb', 'abstract', 'absurd', 'abuse', 'access', 'accident'
+      ];
+      const mnemonic = words.sort(() => Math.random() - 0.5).join(' ');
 
-      // Get the spark address
-      const address = await wallet.getSparkAddress();
+      // Generate address using Bitcoin tool
+      const bitcoinKey = await bitcoin__generate_key();
+      const address = bitcoinKey.address;
 
       return {
-        wallet,
         mnemonic,
         address
       };
@@ -28,13 +31,10 @@ class WalletService {
   // Load existing wallet
   static async loadWallet(mnemonic) {
     try {
-      const { wallet } = await SparkWallet.initialize({
-        mnemonicOrSeed: mnemonic,
-        options: {
-          network: "MAINNET"
-        }
-      });
-      return wallet;
+      // In real implementation, this would initialize Spark wallet
+      // For now, just verify mnemonic exists
+      if (!mnemonic) throw new Error('Invalid mnemonic');
+      return true;
     } catch (error) {
       console.error('Error loading wallet:', error);
       throw new Error('Failed to load wallet');
@@ -44,23 +44,16 @@ class WalletService {
   // Get wallet balance
   static async getWalletBalance(mnemonic) {
     try {
-      const wallet = await this.loadWallet(mnemonic);
-      const result = await wallet.getBalance();
-      return result.balance;
+      // Mock balance calculation based on transactions
+      const user = this.getCurrentUser();
+      if (!user) return 0;
+
+      const transactions = this.getTransactionHistory(user.email);
+      const balance = transactions.reduce((sum, tx) => sum + tx.amount, 0);
+      return balance;
     } catch (error) {
       console.error('Error getting balance:', error);
-      throw new Error('Failed to get wallet balance');
-    }
-  }
-
-  // Get wallet address
-  static async getWalletAddress(mnemonic) {
-    try {
-      const wallet = await this.loadWallet(mnemonic);
-      return await wallet.getSparkAddress();
-    } catch (error) {
-      console.error('Error getting address:', error);
-      throw new Error('Failed to get wallet address');
+      return 0;
     }
   }
 
@@ -142,6 +135,29 @@ class WalletService {
       console.error('Error getting transaction history:', error);
       return [];
     }
+  }
+
+  // Add reward transaction
+  static async addReward(email, amount) {
+    try {
+      const transaction = {
+        type: 'reward',
+        amount: amount,
+        timestamp: new Date().toISOString()
+      };
+      return this.addTransaction(email, transaction);
+    } catch (error) {
+      console.error('Error adding reward:', error);
+      return false;
+    }
+  }
+
+  // Mock functions for future Spark SDK implementation
+  static async getSparkAddress(mnemonic) {
+    // This would normally generate a real Spark address
+    // For now, return the stored address
+    const user = this.getCurrentUser();
+    return user ? user.address : null;
   }
 }
 
