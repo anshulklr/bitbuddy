@@ -1,7 +1,4 @@
-// Mock implementation of Spark Wallet functionality
-// TODO: Replace with actual Spark SDK when package is installed
-
-import { bitcoin__generate_key } from '../utils/bitcoin';
+import { generateWallet } from '../utils/bitcoin';
 
 class WalletService {
   // Generate a new wallet
@@ -14,13 +11,13 @@ class WalletService {
       ];
       const mnemonic = words.sort(() => Math.random() - 0.5).join(' ');
 
-      // Generate address using Bitcoin tool
-      const bitcoinKey = await bitcoin__generate_key();
-      const address = bitcoinKey.address;
+      // Generate address using Bitcoin utility
+      const { address, privateKey } = generateWallet();
 
       return {
         mnemonic,
-        address
+        address,
+        privateKey
       };
     } catch (error) {
       console.error('Error generating wallet:', error);
