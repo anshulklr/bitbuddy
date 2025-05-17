@@ -11,20 +11,94 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { ALL_MODULES } from '../data/moduleData';
+import { useState } from 'react';
+import LessonContent from './LessonContent';
 
 const MotionBox = motion(Box);
 
-export default function ModuleList({ onSelectModule, completedLessons = {} }) {
+export default function ModuleList() {
+  const [selectedModule, setSelectedModule] = useState(null);
+  const [selectedLesson, setSelectedLesson] = useState(null);
   const cardBg = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
 
-  const getModuleProgress = (moduleId) => {
-    const module = ALL_MODULES.find(m => m.id === moduleId);
-    if (!module) return 0;
-    
-    const completed = completedLessons[moduleId] ? completedLessons[moduleId].length : 0;
-    return (completed / module.lessons.length) * 100;
+  const handleModuleSelect = (module) => {
+    setSelectedModule(module);
+    setSelectedLesson(null);
   };
+
+  const handleLessonComplete = async (reward) => {
+    // Handle lesson completion and rewards
+    setSelectedLesson(null);
+    // Refresh module progress
+  };
+
+  const handleBack = () => {
+    if (selectedLesson) {
+      setSelectedLesson(null);
+    } else {
+      setSelectedModule(null);
+    }
+  };
+
+  if (selectedModule) {
+    if (selectedLesson) {
+      return (
+        <VStack spacing={4}>
+          <HStack w="full" justify="space-between">
+            <Heading size="md">{selectedModule.title} - {selectedLesson.title}</Heading>
+            <Box as="button" onClick={handleBack}>← Back</Box>
+          </HStack>
+          <LessonContent 
+            lesson={selectedLesson}
+            onComplete={handleLessonComplete}
+          />
+        </VStack>
+      );
+    }
+
+    return (
+      <VStack spacing={6}>
+        <HStack w="full" justify="space-between">
+          <Heading size="md">{selectedModule.title}</Heading>
+          <Box as="button" onClick={handleBack}>← Back to Modules</Box>
+        </HStack>
+
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6} w="full">
+          {selectedModule.lessons.map((lesson) => (
+            <MotionBox
+              key={lesson.id}
+              as="button"
+              onClick={() => setSelectedLesson(lesson)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Box
+                p={6}
+                bg={cardBg}
+                borderRadius="lg"
+                borderWidth="1px"
+                borderColor={borderColor}
+                textAlign="left"
+                w="full"
+              >
+                <VStack align="start" spacing={3}>
+                  <HStack>
+                    <Text fontSize="2xl">{lesson.emoji}</Text>
+                    <Heading size="sm">{lesson.title}</Heading>
+                  </HStack>
+                  <HStack>
+                    <Badge colorScheme="green">{lesson.duration}</Badge>
+                    <Badge colorScheme="orange">{lesson.reward} sats</Badge>
+                  </HStack>
+                </VStack>
+              </Box>
+            </MotionBox>
+          ))}
+        </SimpleGrid>
+      </VStack>
+    );
+  }
 
   return (
     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
@@ -32,51 +106,47 @@ export default function ModuleList({ onSelectModule, completedLessons = {} }) {
         <MotionBox
           key={module.id}
           as="button"
-          onClick={() => onSelectModule(module)}
+          onClick={() => handleModuleSelect(module)}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          bg={cardBg}
-          p={6}
-          borderRadius="lg"
-          borderWidth="1px"
-          borderColor={borderColor}
-          textAlign="left"
-          width="100%"
         >
-          <VStack align="stretch" spacing={4}>
-            <HStack spacing={3}>
-              <Text fontSize="2xl">{module.emoji}</Text>
-              <Heading size="md">{module.title}</Heading>
-            </HStack>
-            
-            <Text color="gray.500" noOfLines={2}>
-              {module.description}
-            </Text>
-            
-            <HStack>
-              <Badge colorScheme="blue">
-                {module.lessons.length} Lessons
-              </Badge>
-              <Badge colorScheme="orange">
-                {module.totalRewards} sats
-              </Badge>
-            </HStack>
-
-            <Box>
-              <HStack justify="space-between" mb={2}>
-                <Text fontSize="sm" color="gray.500">Progress</Text>
-                <Text fontSize="sm" color="gray.500">
-                  {Math.round(getModuleProgress(module.id))}%
-                </Text>
+          <Box
+            p={6}
+            bg={cardBg}
+            borderRadius="lg"
+            borderWidth="1px"
+            borderColor={borderColor}
+            textAlign="left"
+            w="full"
+          >
+            <VStack align="start" spacing={4}>
+              <HStack spacing={3}>
+                <Text fontSize="2xl">{module.emoji}</Text>
+                <Heading size="md">{module.title}</Heading>
               </HStack>
+              
+              <Text color="gray.500" noOfLines={2}>
+                {module.description}
+              </Text>
+              
+              <HStack>
+                <Badge colorScheme="blue">
+                  {module.lessons.length} Lessons
+                </Badge>
+                <Badge colorScheme="orange">
+                  {module.totalRewards} sats
+                </Badge>
+              </HStack>
+
               <Progress
-                value={getModuleProgress(module.id)}
+                value={0} // Add progress tracking later
                 size="sm"
                 colorScheme="orange"
                 borderRadius="full"
+                w="full"
               />
-            </Box>
-          </VStack>
+            </VStack>
+          </Box>
         </MotionBox>
       ))}
     </SimpleGrid>
