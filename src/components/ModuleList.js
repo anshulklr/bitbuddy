@@ -27,6 +27,10 @@ export default function ModuleList() {
     setSelectedLesson(null);
   };
 
+  const handleLessonSelect = (lesson) => {
+    setSelectedLesson(lesson);
+  };
+
   const handleLessonComplete = async (reward) => {
     // Handle lesson completion and rewards
     setSelectedLesson(null);
@@ -68,10 +72,10 @@ export default function ModuleList() {
           {selectedModule.lessons.map((lesson) => (
             <MotionBox
               key={lesson.id}
-              as="button"
-              onClick={() => setSelectedLesson(lesson)}
+              onClick={() => handleLessonSelect(lesson)}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              cursor="pointer"
             >
               <Box
                 p={6}
@@ -79,8 +83,7 @@ export default function ModuleList() {
                 borderRadius="lg"
                 borderWidth="1px"
                 borderColor={borderColor}
-                textAlign="left"
-                w="full"
+                h="full"
               >
                 <VStack align="start" spacing={3}>
                   <HStack>
@@ -105,10 +108,10 @@ export default function ModuleList() {
       {ALL_MODULES.map((module) => (
         <MotionBox
           key={module.id}
-          as="button"
           onClick={() => handleModuleSelect(module)}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
+          cursor="pointer"
         >
           <Box
             p={6}
@@ -116,8 +119,7 @@ export default function ModuleList() {
             borderRadius="lg"
             borderWidth="1px"
             borderColor={borderColor}
-            textAlign="left"
-            w="full"
+            h="full"
           >
             <VStack align="start" spacing={4}>
               <HStack spacing={3}>
