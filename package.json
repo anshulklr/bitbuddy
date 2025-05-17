@@ -9,16 +9,33 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "keywords": ["bitcoin", "education", "finance"],
+  "keywords": [
+    "bitcoin",
+    "education",
+    "finance"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@buildonspark/spark-sdk": "^0.1.22",
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
     "framer-motion": "^10.16.0",
+    "https-browserify": "^1.0.0",
     "next": "^13.4.19",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.99.8"
   }
 }
