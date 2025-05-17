@@ -13,6 +13,7 @@ import {
   Container,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import WalletService from '../services/WalletService';
 
 // Helper function to check email validity
 const isValidEmail = (email) => {
@@ -35,7 +36,7 @@ export default function Auth() {
 
   // Check if user is already logged in
   useEffect(() => {
-    const user = localStorage.getItem('bitbuddy_user');
+    const user = WalletService.getCurrentUser();
     if (user) {
       router.push('/dashboard');
     }
@@ -80,18 +81,17 @@ export default function Auth() {
     try {
       if (isLogin) {
         // Login logic
-        const users = JSON.parse(localStorage.getItem('bitbuddy_users') || '[]');
-        const user = users.find(u => u.email === email && u.password === password);
-
-        if (!user) {
+        const user = WalletService.getUser(email);
+        
+        if (!user || user.password !== password) {
           throw new Error('Invalid credentials');
         }
 
-        // Set current user
-        localStorage.setItem('bitbuddy_user', JSON.stringify({
-          email: user.email,
-          walletAddress: user.walletAddress
-        }));
+        // Load wallet and verify it works
+        await WalletService.loadWallet(user.mnemonic);
+
+        // Save current session
+        WalletService.saveUser(user);
 
         toast({
           title: 'Success',
@@ -104,38 +104,39 @@ export default function Auth() {
         router.push('/dashboard');
       } else {
         // Sign up logic
-        const users = JSON.parse(localStorage.getItem('bitbuddy_users') || '[]');
-        
-        if (users.some(u => u.email === email)) {
+        const existingUser = WalletService.getUser(email);
+        if (existingUser) {
           throw new Error('Email already exists');
         }
 
-        // Generate a new wallet for the user
-        const newWallet = await generateWallet();
+        // Generate new wallet
+        const { mnemonic, address } = await WalletService.generateWallet();
 
+        // Save user data
         const newUser = {
           email,
           password,
-          walletAddress: newWallet.address,
-          privateKey: newWallet.privateKey,
-          createdAt: new Date().toISOString(),
-          balance: 0,
+          mnemonic,
+          address,
+          createdAt: new Date().toISOString()
         };
 
-        users.push(newUser);
-        localStorage.setItem('bitbuddy_users', JSON.stringify(users));
-
-        // Set current user
-        localStorage.setItem('bitbuddy_user', JSON.stringify({
-          email: newUser.email,
-          walletAddress: newUser.walletAddress
-        }));
+        WalletService.saveUser(newUser);
 
         toast({
           title: 'Success',
           description: 'Account created successfully',
           status: 'success',
           duration: 3000,
+          isClosable: true,
+        });
+
+        // Show mnemonic backup warning
+        toast({
+          title: 'Important',
+          description: 'Please save your mnemonic phrase safely: ' + mnemonic,
+          status: 'warning',
+          duration: null,
           isClosable: true,
         });
 

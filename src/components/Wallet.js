@@ -19,30 +19,61 @@ import {
   Th,
   Td,
   useClipboard,
+  Alert,
+  AlertIcon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 import WalletService from '../services/WalletService';
 
 export default function Wallet() {
   const [walletInfo, setWalletInfo] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
   const { onCopy: copyAddress } = useClipboard(walletInfo?.address || '');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     loadWalletInfo();
   }, []);
 
-  const loadWalletInfo = () => {
-    const user = JSON.parse(localStorage.getItem('bitbuddy_user'));
-    if (user) {
-      const balance = WalletService.getWalletBalance(user.walletAddress);
+  const loadWalletInfo = async () => {
+    try {
+      const currentUser = WalletService.getCurrentUser();
+      if (!currentUser) return;
+
+      const userData = WalletService.getUser(currentUser.email);
+      setUser(userData);
+
+      // Load wallet balance
+      const balance = await WalletService.getWalletBalance(userData.mnemonic);
+      
       setWalletInfo({
-        address: user.walletAddress,
+        address: userData.address,
         balance: balance
       });
       
-      const history = WalletService.getTransactionHistory(user.walletAddress);
+      // Load transaction history
+      const history = WalletService.getTransactionHistory(userData.email);
       setTransactions(history);
+    } catch (error) {
+      console.error('Error loading wallet:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load wallet information',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,6 +85,18 @@ export default function Wallet() {
       duration: 2000,
     });
   };
+
+  const showMnemonic = () => {
+    onOpen();
+  };
+
+  if (isLoading) {
+    return (
+      <Box p={6}>
+        <Text>Loading wallet information...</Text>
+      </Box>
+    );
+  }
 
   return (
     <Box p={6}>
@@ -75,7 +118,7 @@ export default function Wallet() {
                 </Stat>
 
                 <Box>
-                  <Text fontWeight="bold" mb={2}>Wallet Address</Text>
+                  <Text fontWeight="bold" mb={2}>Spark Address</Text>
                   <HStack>
                     <Text fontSize="sm" fontFamily="monospace">
                       {walletInfo.address}
@@ -85,8 +128,17 @@ export default function Wallet() {
                     </Button>
                   </HStack>
                 </Box>
+
+                <Button size="sm" colorScheme="orange" onClick={showMnemonic}>
+                  Show Recovery Phrase
+                </Button>
               </VStack>
             </Box>
+
+            <Alert status="info">
+              <AlertIcon />
+              Earn sats by completing lessons and save them for your goals!
+            </Alert>
 
             <Box>
               <Heading size="md" mb={4}>Transaction History</Heading>
@@ -120,6 +172,24 @@ export default function Wallet() {
           </>
         )}
       </VStack>
+
+      {/* Mnemonic Display Modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Recovery Phrase</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <Alert status="warning" mb={4}>
+              <AlertIcon />
+              Never share this phrase with anyone!
+            </Alert>
+            <Text fontFamily="monospace" p={4} bg="gray.100" borderRadius="md">
+              {user?.mnemonic}
+            </Text>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
