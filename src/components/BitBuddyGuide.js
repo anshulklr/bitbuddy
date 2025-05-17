@@ -1,6 +1,7 @@
 import { Box, Text, VStack, keyframes } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
+import soundManager from '../utils/soundManager';
 
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -82,6 +83,14 @@ export default function BitBuddyGuide({
     }
   };
 
+  const handleHover = () => {
+    soundManager.play('hover', 0.1);
+  };
+
+  const handleClick = () => {
+    soundManager.play('click', 0.2);
+  };
+
   return (
     <VStack spacing={4} align={withMessage ? "start" : "center"}>
       <Box display="flex" alignItems="center">
@@ -90,6 +99,8 @@ export default function BitBuddyGuide({
           whileHover="hover"
           whileTap="tap"
           variants={variants}
+          onHoverStart={handleHover}
+          onClick={handleClick}
         >
           <Box 
             as="img"

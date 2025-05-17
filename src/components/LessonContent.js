@@ -74,8 +74,7 @@ export default function LessonContent({ lesson, onComplete }) {
 
   useEffect(() => {
     // Play sound effect when lesson starts
-    const audio = new Audio('/sounds/start.mp3'); // You'll need to add this sound file
-    audio.play().catch(e => console.log('Audio play failed:', e));
+    soundManager.play('start', 0.3);
   }, []);
 
   const handleNext = () => {
@@ -83,9 +82,7 @@ export default function LessonContent({ lesson, onComplete }) {
       setCurrentStep(currentStep + 1);
       setCompanionMessage(getRandomMessage('progress'));
       
-      // Play progress sound
-      const audio = new Audio('/sounds/progress.mp3');
-      audio.play().catch(e => console.log('Audio play failed:', e));
+      soundManager.play('progress', 0.3);
     } else {
       setShowQuiz(true);
       setCompanionMessage("Time to test what you've learned! You can do it! 🎯");
@@ -97,9 +94,7 @@ export default function LessonContent({ lesson, onComplete }) {
     const correct = index === lesson.quiz.correct;
     setIsCorrect(correct);
     
-    // Play sound based on answer
-    const audio = new Audio(correct ? '/sounds/correct.mp3' : '/sounds/incorrect.mp3');
-    audio.play().catch(e => console.log('Audio play failed:', e));
+    soundManager.play(correct ? 'correct' : 'incorrect', 0.3);
     
     setCompanionMessage(getRandomMessage(correct ? 'success' : 'incorrect'));
   };
