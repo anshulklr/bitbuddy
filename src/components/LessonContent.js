@@ -10,16 +10,15 @@ import {
   SimpleGrid,
   Image,
   useToast,
-  Icon,
   Badge,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import BitBuddyGuide from './BitBuddyGuide';
 import soundManager from '../utils/soundManager';
-import { FaStar } from 'react-icons/fa';
 
 const MotionBox = motion(Box);
+const MotionButton = motion(Button);
 
 const lessonImages = {
   "What is Money?": [
@@ -144,10 +143,9 @@ export default function LessonContent({ lesson, onComplete }) {
             <Badge colorScheme="orange" p={2} borderRadius="md">
               Lesson {lesson.id}: {lesson.title}
             </Badge>
-            <HStack>
-              <Icon as={FaStar} color="orange.400" />
-              <Text>{lesson.reward} sats</Text>
-            </HStack>
+            <Badge colorScheme="purple" p={2}>
+              {lesson.reward} sats reward
+            </Badge>
           </HStack>
           <Progress
             value={!showQuiz ? (currentStep / lesson.content.length) * 100 : 100}
@@ -226,18 +224,16 @@ export default function LessonContent({ lesson, onComplete }) {
               </SimpleGrid>
             )}
 
-            <Button
+            <MotionButton
               colorScheme="orange"
               onClick={handleNext}
               alignSelf="flex-end"
               size="lg"
-              rightIcon={currentStep < lesson.content.length - 1 ? "→" : "✓"}
-              as={motion.button}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               {currentStep < lesson.content.length - 1 ? "Next" : "Take Quiz"}
-            </Button>
+            </MotionButton>
           </VStack>
         ) : (
           <VStack spacing={6}>
@@ -246,7 +242,7 @@ export default function LessonContent({ lesson, onComplete }) {
             
             <SimpleGrid columns={1} spacing={4} w="full">
               {lesson.quiz.options.map((option, idx) => (
-                <Button
+                <MotionButton
                   key={idx}
                   onClick={() => handleAnswerSelect(idx)}
                   colorScheme={
@@ -260,12 +256,11 @@ export default function LessonContent({ lesson, onComplete }) {
                   height="auto"
                   py={4}
                   whiteSpace="normal"
-                  as={motion.button}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   {option}
-                </Button>
+                </MotionButton>
               ))}
             </SimpleGrid>
 
@@ -286,17 +281,15 @@ export default function LessonContent({ lesson, onComplete }) {
                 </MotionBox>
 
                 {isCorrect && (
-                  <Button
+                  <MotionButton
                     colorScheme="orange"
                     onClick={() => onComplete(lesson.reward)}
                     size="lg"
-                    leftIcon="🎁"
-                    as={motion.button}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Claim {lesson.reward} sats reward!
-                  </Button>
+                    Claim {lesson.reward} sats reward! 🎁
+                  </MotionButton>
                 )}
               </VStack>
             )}

@@ -1,5 +1,5 @@
 import { Box, Text, VStack } from '@chakra-ui/react';
-import { motion, keyframes as framerKeyframes } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import soundManager from '../utils/soundManager';
@@ -84,6 +84,7 @@ export default function BitBuddyGuide({
     <VStack spacing={4} align={withMessage ? "start" : "center"}>
       <Box display="flex" alignItems="center">
         <AnimatedBitBuddy
+          as={motion.div}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onHoverStart={handleHover}
@@ -95,7 +96,7 @@ export default function BitBuddyGuide({
             alt="BitBuddy"
             {...mascotSizes[size]}
             onError={(e) => {
-              e.target.src = "/download.png"; // Fallback to local image
+              e.target.src = "/download.png";
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
