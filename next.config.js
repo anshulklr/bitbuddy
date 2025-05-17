@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -15,15 +17,15 @@ const nextConfig = {
         zlib: require.resolve('browserify-zlib'),
         path: require.resolve('path-browserify'),
         os: require.resolve('os-browserify/browser'),
-        http2: false,  // Add this line
-        child_process: false,  // Add this line
-        dns: false,  // Add this line
-        dgram: false,  // Add this line
+        http2: false,
+        child_process: false,
+        dns: false,
+        dgram: false,
       };
 
       // Add polyfills
       config.plugins.push(
-        new config.webpack.ProvidePlugin({
+        new webpack.ProvidePlugin({
           process: 'process/browser',
           Buffer: ['buffer', 'Buffer'],
         })
